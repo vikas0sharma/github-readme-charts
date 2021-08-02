@@ -1,11 +1,6 @@
-﻿using GithubReadMeCharts.HighChart;
-using IronPython.Hosting;
+﻿using GithubReadMeCharts.Github;
+using GithubReadMeCharts.HighChart;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Microsoft.Scripting.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GithubReadMeCharts.Controllers
@@ -14,15 +9,25 @@ namespace GithubReadMeCharts.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        public WeatherForecastController(IHighChartApi api)
+        public WeatherForecastController(HighChartService highChartService, GithubService githubService)
         {
-            this.api = api;
+            this.highChartService = highChartService;
+            this.githubService = githubService;
         }
         private readonly IHighChartApi api;
+        private readonly HighChartService highChartService;
+        private readonly GithubService githubService;
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            var r = await githubService.GetLatestRepos("vikas0sharma");
+            var r0 = await githubService.GetLanguagesStats("vikas0sharma");
+            var r00 = await highChartService.GetLanguagesUsedChart(r0);
+            return File(r00, "image/jpeg");
+            /*
+            var r1 = await highChartService.GetChartByRepos(r);
+            return File(r1, "image/jpeg");
             var res = await api.CreateChart(new
             {
                 async = true,
@@ -54,7 +59,8 @@ namespace GithubReadMeCharts.Controllers
 
             var resss = await api.GetChart(res.Replace("charts/",""));
             return File(resss, "image/jpeg");
-           
+            */
+
         }
     }
 }

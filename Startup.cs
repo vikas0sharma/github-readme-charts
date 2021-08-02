@@ -1,17 +1,15 @@
+using GithubReadMeCharts.Github;
 using GithubReadMeCharts.HighChart;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using RestEase;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace GithubReadMeCharts
 {
@@ -27,14 +25,24 @@ namespace GithubReadMeCharts
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            //services.AddHttpClient("HighChartApi", (s, c) =>
-            //{
-            //    c.BaseAddress = new Uri("http://export.highcharts.com");
-            //});
+            services.AddControllersWithViews();
+
             services.AddScoped(sp => {
-                return RestClient.For<IHighChartApi>("http://export.highcharts.com");
+                var settings = new JsonSerializerSettings()
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                };
+
+                var api = new RestClient("http://export.highcharts.com")
+                {
+                    JsonSerializerSettings = settings
+                };
+                return api.For<IHighChartApi>();
             });
+            services.AddScoped(sp => RestClient.For<IGithubApi>("https://api.github.com"));
+            
+            services.AddScoped<GithubService>();
+            services.AddScoped<HighChartService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,14 +54,14 @@ namespace GithubReadMeCharts
             }
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
+            // add mvc and configure default fallback  to home controller, in order to allow refresh on backend
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=HomePage}");
             });
         }
     }

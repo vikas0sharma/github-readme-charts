@@ -13,3 +13,13 @@ Just replace the Github's username and you are good to go. See below example:
 ![Activities](https://github-readme-charts.herokuapp.com/charts/activity?u=vikas0sharma)
 ```
 ![Activities](https://github-readme-charts.herokuapp.com/charts/activity?u=vikas0sharma)
+
+```
+![Timeline](https://github-readme-charts.herokuapp.com/charts/timeline?u=vikas0sharma)
+```
+![Timeline](https://github-readme-charts.herokuapp.com/charts/timeline?u=vikas0sharma)
+
+```
+![Commits](https://github-readme-charts.herokuapp.com/charts/wordcloud?u=vikas0sharma)
+```
+![Commits](https://github-readme-charts.herokuapp.com/charts/wordcloud?u=vikas0sharma)

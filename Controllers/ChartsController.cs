@@ -38,6 +38,22 @@ namespace GithubReadMeCharts.Controllers
             return File(stream, "image/jpeg");
         }
 
+        [HttpGet("timeline")]
+        public async Task<IActionResult> GetRepoTime(string u)
+        {
+            var data = await githubService.GetActivitiesByType(u, Github.Models.EventType.CreateEvent);
+            var stream = await highChartService.GetActivityTimeline(data);
+            return File(stream, "image/jpeg");
+        }
+
+        [HttpGet("wordcloud")]
+        public async Task<IActionResult> GetCommitsWordcloud(string u)
+        {
+            var data = await githubService.GetCommitsWeightage(u);
+            var stream = await highChartService.GetCommitsWordcloud(data);
+            return File(stream, "image/jpeg");
+        }
+
 
     }
 }

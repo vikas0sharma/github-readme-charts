@@ -58,5 +58,29 @@ namespace GithubReadMeCharts.Github
             }).ToArray();
         }
 
+        public async Task<ActivityDto[]> GetActivitiesByType(string user, EventType type)
+        {
+            var activities = await api.GetAllEvents(user);
+            return activities
+                .Where(a => a.Type == type)
+                .GroupBy(a => a.Repo?.Name)
+                .Select(g => g.First())
+                .OrderBy(a => a.CreatedAt)
+                .Select(e => new ActivityDto
+                {
+                    Date = e.CreatedAt,
+                    Repo = e.Repo?.Name.Replace(user + "/", "")
+                }).ToArray();
+        }
+        public async Task<Dictionary<string, int>> GetCommitsWeightage(string user)
+        {
+            var activities = await api.GetAllEvents(user);
+            return activities.Where(a => a.Type == EventType.PushEvent)
+                .SelectMany(a => a.Payload.Commits)
+                .GroupBy(c => c.Message)
+                .Select(g => new { key = g.Key.Substring(0, g.Key.Length > 50 ? 50 : g.Key.Length), count = g.Count() })
+                .ToDictionary(g => g.key, g => g.count);
+        }
+
     }
 }

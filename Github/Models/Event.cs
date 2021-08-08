@@ -13,6 +13,8 @@ namespace GithubReadMeCharts.Github.Models
         [JsonProperty("created_at")]
         public DateTime CreatedAt { get; set; }
         public EventType Type { get; set; }
+        public Repo Repo { get; set; }
+        public Payload Payload { get; set; }
     }
 
 

@@ -160,7 +160,152 @@ namespace GithubReadMeCharts.HighChart
                 type = "image/png",
                 width = false
             };
-            
+
+            var chartLocation = await api.CreateChart(request);
+
+            return await api.GetChart(chartLocation.Replace("charts/", ""));
+        }
+
+        public async Task<Stream> GetActivityTimeline(ActivityDto[] activities)
+        {
+            var request = new
+            {
+                async = true,
+                constr = "Chart",
+                infile = new
+                {
+                    chart = new
+                    {
+                        type = "timeline",
+                        renderTo = "container",
+                        //options3d = new
+                        //{
+                        //    enabled = true,
+                        //    alpha = 45,
+                        //},
+                        //backgroundColor = new
+                        //{
+                        //    linearGradient = new[] { 0, 0, 500, 500 },
+                        //    stops = new object[] {
+                        //        new object[] { 0, "#2a2a2b" },
+                        //        new object[] { 1, "#3e3e40" }
+                        //    }
+                        //},
+                    },
+                    //plotOptions = new
+                    //{
+                    //    series = new
+                    //    {
+                    //        dataLabels = new
+                    //        {
+                    //            enabled = true,
+                    //            color = "#E0E0E3"
+                    //        }
+                    //    }
+                    //},
+                    title = new
+                    {
+                        text = "Repositories Timeline",
+                        //style = new
+                        //{
+                        //    color = "#E0E0E3"
+                        //}
+                    },
+                    series = new object[] {
+                       new {
+                               data =
+                               activities.Select(a => new
+                               {
+                                name = $"<b>{a.Date.ToShortDateString()}</b>",
+                                label = $"<i>{a.Repo}</i>"
+                               }),
+                               type = "timeline"
+                        }
+                    },
+                    xAxis = new
+                    {
+                        visible = false,
+                    },
+                    yAxis = new
+                    {
+                        visible = false
+                    },
+                    colors = new string[] {
+                        "#4185F3",
+                        "#427CDD",
+                        "#406AB2",
+                        "#3E5A8E",
+                        "#3B4A68",
+                        "#363C46"
+                    },
+                },
+                scale = false,
+                type = "image/png",
+                width = false
+            };
+            var chartLocation = await api.CreateChart(request);
+
+            return await api.GetChart(chartLocation.Replace("charts/", ""));
+        }
+
+        public async Task<Stream> GetCommitsWordcloud(Dictionary<string, int> commits)
+        {
+            var request = new
+            {
+                async = true,
+                constr = "Chart",
+                infile = new
+                {
+                    chart = new
+                    {
+                        type = "wordcloud",
+                        renderTo = "container",
+
+                        //options3d = new
+                        //{
+                        //    enabled = true,
+                        //    alpha = 45,
+                        //},
+                        //backgroundColor = new
+                        //{
+                        //    linearGradient = new[] { 0, 0, 500, 500 },
+                        //    stops = new object[] {
+                        //        new object[] { 0, "#2a2a2b" },
+                        //        new object[] { 1, "#3e3e40" }
+                        //    }
+                        //},
+                    },
+                    //plotOptions = new
+                    //{
+                    //    series = new
+                    //    {
+                    //        dataLabels = new
+                    //        {
+                    //            enabled = true,
+                    //            color = "#E0E0E3"
+                    //        }
+                    //    }
+                    //},
+                    title = new
+                    {
+                        text = "Repositories Timeline",
+                        //style = new
+                        //{
+                        //    color = "#E0E0E3"
+                        //}
+                    },
+                    series = new object[] {
+                       new {
+                               data =commits.Select(kv => new { name = kv.Key, weight = kv.Value })
+
+                        }
+                    }
+
+                },
+                scale = false,
+                type = "image/png",
+                width = false
+            };
             var chartLocation = await api.CreateChart(request);
 
             return await api.GetChart(chartLocation.Replace("charts/", ""));

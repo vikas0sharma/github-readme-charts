@@ -33,7 +33,7 @@ namespace GithubReadMeCharts
                     ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 };
 
-                var api = new RestClient("http://export.highcharts.com")
+                var api = new RestClient("https://export.highcharts.com")
                 {
                     JsonSerializerSettings = settings
                 };

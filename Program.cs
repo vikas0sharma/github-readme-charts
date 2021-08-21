@@ -23,10 +23,10 @@ namespace GithubReadMeCharts
                 {
                     // Required for Heroku
                     #if !DEBUG
-                    webBuilder.ConfigureKestrel(serverOptions =>
-                     {
-                         serverOptions.Listen(IPAddress.Any, Convert.ToInt32(Environment.GetEnvironmentVariable("PORT")));
-                     });
+                    //webBuilder.ConfigureKestrel(serverOptions =>
+                    // {
+                    //     serverOptions.Listen(IPAddress.Any, Convert.ToInt32(Environment.GetEnvironmentVariable("PORT")));
+                    // });
                     #endif
 
                     webBuilder.UseStartup<Startup>();

@@ -27,7 +27,7 @@ namespace GithubReadMeCharts.Controllers
         {
             var data = await githubService.GetLanguagesStats(u);
             var stream = await highChartService.GetLanguagesUsedChart(data);
-            return File(stream, "image/jpeg");
+            return File(stream, "image/png");
         }
 
         [HttpGet("activity")]
@@ -35,7 +35,7 @@ namespace GithubReadMeCharts.Controllers
         {
             var data = await githubService.GetActivityStats(u);
             var stream = await highChartService.GetActivityChart(data);
-            return File(stream, "image/jpeg");
+            return File(stream, "image/png");
         }
 
         [HttpGet("timeline")]
@@ -43,7 +43,7 @@ namespace GithubReadMeCharts.Controllers
         {
             var data = await githubService.GetActivitiesByType(u, Github.Models.EventType.CreateEvent);
             var stream = await highChartService.GetActivityTimeline(data);
-            return File(stream, "image/jpeg");
+            return File(stream, "image/png");
         }
 
         [HttpGet("wordcloud")]
@@ -51,9 +51,8 @@ namespace GithubReadMeCharts.Controllers
         {
             var data = await githubService.GetCommitsWeightage(u);
             var stream = await highChartService.GetCommitsWordcloud(data);
-            return File(stream, "image/jpeg");
+            return File(stream, "image/png");
         }
-
 
     }
 }

@@ -5,16 +5,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
 using RestEase;
 using RestEase.HttpClientFactory;
 using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
 
 namespace GithubReadMeCharts
 {
@@ -31,11 +27,11 @@ namespace GithubReadMeCharts
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddHttpClient("example")
-                .ConfigureHttpClient(x => x.BaseAddress = new Uri($"{Configuration["HighchartServerBaseUrl"]}"))
-                .UseWithRestEaseClient<IHighChartServerApi>();
+            //services.AddHttpClient("example")
+            //    .ConfigureHttpClient(x => x.BaseAddress = new Uri($"{Configuration["HighchartServerBaseUrl"]}"))
+            //    .UseWithRestEaseClient<IHighChartServerApi>();
 
-            //services.AddScoped(sp => RestClient.For<IHighChartServerApi>($"{Configuration["HighchartServerBaseUrl"]}/highchart-server"));
+            services.AddScoped(sp => RestClient.For<IHighChartServerApi>($"{Configuration["HighchartServerBaseUrl"]}"));
             services.AddScoped(sp => RestClient.For<IGithubApi>("https://api.github.com"));
             
             services.AddScoped<GithubService>();

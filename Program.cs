@@ -19,15 +19,20 @@ namespace GithubReadMeCharts
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.AddConsole();
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     // Required for Heroku
-                    #if !DEBUG
-                    //webBuilder.ConfigureKestrel(serverOptions =>
-                    // {
-                    //     serverOptions.Listen(IPAddress.Any, Convert.ToInt32(Environment.GetEnvironmentVariable("PORT")));
-                    // });
-                    #endif
+#if !DEBUG
+                    webBuilder.ConfigureKestrel(serverOptions =>
+                     {
+                         serverOptions.Listen(IPAddress.Any, Convert.ToInt32(Environment.GetEnvironmentVariable("PORT")));
+                     });
+#endif
 
                     webBuilder.UseStartup<Startup>();
                 });

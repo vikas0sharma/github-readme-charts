@@ -26,7 +26,7 @@ namespace GithubReadMeCharts.Controllers
         private readonly IConfiguration configuration;
         private readonly ILogger logger;
 
-        public HighChartServerController(IServiceProvider provider, HighChartJsModuleService highChartJsModule, IConfiguration configuration, ILogger logger)
+        public HighChartServerController(IServiceProvider provider, HighChartJsModuleService highChartJsModule, IConfiguration configuration, ILogger<HighChartServerController> logger)
         {
             this.provider = provider;
             this.highChartJsModule = highChartJsModule;
@@ -41,8 +41,8 @@ namespace GithubReadMeCharts.Controllers
             var webDriver = provider.GetRequiredService<IWebDriver>();
             try
             {
-                logger.LogInformation($"Calling Selenium: {configuration["HighchartServerBaseUrl"]}/highchart-server/chart");
-                webDriver.Navigate().GoToUrl($"{configuration["HighchartServerBaseUrl"]}/highchart-server/chart");
+                logger.LogInformation($"Calling Selenium: {configuration["HighchartServerBaseUrl"]}highchart-server/chart");
+                webDriver.Navigate().GoToUrl($"{configuration["HighchartServerBaseUrl"]}highchart-server/chart");
                 IJavaScriptExecutor javaScriptExecutor = (IJavaScriptExecutor)webDriver;
                 var js = $"{highChartJsModule.Js} " +
                     $" drawChart(arguments[0]);";

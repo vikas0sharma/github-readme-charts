@@ -43,6 +43,7 @@ namespace GithubReadMeCharts
                 //opt.AddArgument("--force-device-scale-factor=1");
                 //opt.AddArgument("--start-maximized");
                 opt.AddArguments("headless");
+                opt.AddArguments("--no-sandbox");
                 var driver = new ChromeDriver(opt);
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);// default
                 ((RemoteWebDriver)driver).FileDetector = new LocalFileDetector();

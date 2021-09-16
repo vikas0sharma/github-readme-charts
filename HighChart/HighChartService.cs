@@ -148,7 +148,7 @@ namespace GithubReadMeCharts.HighChart
                     }
                 },
             };
-            var highChartServerApi = RestClient.For<IHighChartServerApi>("http://localhost:5001/");
+
             return await highChartServerApi.GetChartString(new DrawReq
             {
                 Options = JsonConvert.SerializeObject(request)
